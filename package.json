@@ -1,0 +1,19 @@
+{
+  "name": "api_first_express_openapi",
+  "version": "1.0.0",
+  "description": "We created an API with the OpenAPI methodology. Use Express Js and Virtual environments.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^9.31.0"
+  }
+}
