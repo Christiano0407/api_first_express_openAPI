@@ -1,6 +1,13 @@
 import express from 'express'; 
+import SwaggerUI from 'swagger-ui'; 
+import YAML from 'yamljs'; 
 const app = express();
 const port = 3000;
+
+
+const swaggerDocument = YAML.load('../openAPI/api.yaml');
+
+app.use('/api-docs', SwaggerUI.serve, SwaggerUI.setup(swaggerDocument)); 
 
 app.get(`/hello`, (req, res) => {
   res
