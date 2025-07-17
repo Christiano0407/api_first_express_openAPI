@@ -19,6 +19,7 @@
     "express": "^5.1.0",
     "js-yaml": "^4.1.0",
     "prettier": "^3.6.2",
+    "swagger-ui": "^3.29.0",
     "swagger-ui-express": "^5.0.1",
     "yamljs": "^0.3.0"
   },
