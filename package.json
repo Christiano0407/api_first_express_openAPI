@@ -1,7 +1,7 @@
 {
   "name": "api_first_express_openapi",
   "version": "1.0.0",
-  "type": "module", 
+  "type": "module",
   "description": "We created an API with the OpenAPI methodology. Use Express Js and Virtual environments.",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,7 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
+    "js-yaml": "^4.1.0",
     "prettier": "^3.6.2",
     "swagger-ui-express": "^5.0.1",
     "yamljs": "^0.3.0"

@@ -5,8 +5,8 @@ import pluginJs from "@eslint/js";
 export default [
   {
     languageOptions: {
-      globals: globals.node
-    }
+      globals: globals.node,
+    },
   },
   pluginJs.configs.recommended,
   {
@@ -14,10 +14,10 @@ export default [
     rules: {
       // Tus reglas personalizadas aquí
       "no-unused-vars": "warn",
-      "indent": ["error", 2], // Ejemplo: 2 espacios de indentación
+      indent: ["error", 2], // Ejemplo: 2 espacios de indentación
       "linebreak-style": ["error", "unix"],
-      "quotes": ["error", "backtick", { "avoidEscape": true }],
-      "semi": ["error", "always"]
-    }
-  }
+      quotes: ["error", "backtick", { avoidEscape: true }],
+      semi: ["error", "always"],
+    },
+  },
 ];
