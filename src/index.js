@@ -1,13 +1,13 @@
 import express from "express";
 import SwaggerUI from "swagger-ui-express";
 import YAML from 'js-yaml'; 
-import { readSync } from "fs"; 
+import { readFileSync } from "fs"; 
 
 const app = express();
 const port = 3000;
 
 
-const swaggerDocument = YAML.load(readSync("../openAPI/api.yaml", "utf8"));
+const swaggerDocument = YAML.load(readFileSync("../openAPI/api.yaml", "utf8"));
 
 app.use(`/api-docs`, SwaggerUI.serve, SwaggerUI.setup(swaggerDocument));
 
