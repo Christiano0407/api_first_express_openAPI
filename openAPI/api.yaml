@@ -3,18 +3,17 @@ info:
   title: API FIrst
   version: 1.0.0
   description: This is a my first API with OpenAPI 3.1.1
-servers: 
+servers:
   - url: https://localhost:3000
     description: Server is running in port | Production server
-paths: 
-  /hello: 
+paths:
+  /hello:
     get:
       summary: Hello World with OpenAPI 3.1.1 | API First
-      description: This endpoint return a status '200' with a message: 'Hello World'
-      responses: 
-        '200': 
+      responses:
+        "200":
           description: A successful response
-          content: 
+          content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HelloWorldResponse'
+                $ref: "#/components/schemas/HelloWorldResponse"
