@@ -17,3 +17,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelloWorldResponse"
+components:
+  schemas:
+    HelloWorldResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: A message from the API
+          example: Hello World with OpenAPI 3.1.1 | API First
