@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "format": "prettier --write .",
-    "lint": "eslint ."
+    "lint": "eslint .", 
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js" 
   },
   "keywords": [],
   "author": "",
