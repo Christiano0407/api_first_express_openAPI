@@ -4,8 +4,7 @@ import YAML from "js-yaml";
 import path from "path";
 import { fileURLToPath } from "url";
 import { readFileSync } from "fs";
-import pkg from "express-openapi-validator";
-const { OpenApiValidator } = pkg; // Open API Validator | Come Common Js
+import OpenApiValidator  from "express-openapi-validator";
 
 const app = express();
 const port = 3000;
@@ -18,11 +17,12 @@ const swaggerDocument = YAML.load(
 
 app.use(`/api-docs`, SwaggerUI.serve, SwaggerUI.setup(swaggerDocument));
 
-const apiSpecPath = path.join(__dirname, `../openAPI/api.yaml`); 
+const apiSpecPath = path.join(__dirname, `../openAPI/api.yaml`);
 
 app.use(
   OpenApiValidator.middleware({
     apiSpec: apiSpecPath,
+    ignorePaths: /api-docs/,
     validateRequests: true, // Validate request: body, query, params
     validateResponses: true, // Validate Response
   }),
@@ -52,5 +52,5 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
   console.log(`Server is running in port ${port} | Production server`);
   console.log(`OpenAPI Documentation is Available ar /api-docs`);
-  console.log(`Open API Specification is Available at ${apiSpecPath}`); 
+  console.log(`Open API Specification is Available at ${apiSpecPath}`);
 });
