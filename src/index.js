@@ -4,7 +4,7 @@ import YAML from "js-yaml";
 import path from "path";
 import { fileURLToPath } from "url";
 import { readFileSync } from "fs";
-import OpenApiValidator  from "express-openapi-validator";
+import OpenApiValidator from "express-openapi-validator";
 
 const app = express();
 const port = 3000;
@@ -15,7 +15,11 @@ const swaggerDocument = YAML.load(
   readFileSync(path.join(__dirname, `../openAPI/api.yaml`), `utf8`),
 );
 
+const users = []; // In-Memory Users Storage;
+
 app.use(`/api-docs`, SwaggerUI.serve, SwaggerUI.setup(swaggerDocument));
+
+app.use(express.json()); // Middleware to parse JSON Bodies
 
 const apiSpecPath = path.join(__dirname, `../openAPI/api.yaml`);
 
@@ -28,10 +32,33 @@ app.use(
   }),
 );
 
+// ================= API EndPoints ================= //
+
 app.get(`/hello`, (req, res) => {
   res
     .status(200)
     .json({ message: `Hello World with OpenAPI 3.1.1 | API First` });
+});
+
+app.post(`/user`, (req, res) => {
+  const { name, email } = req.body;
+
+  const newUser = {
+    id: Date.now().toString(),
+    name,
+    email,
+  };
+
+  users.push(newUser);
+
+  res.status(201).json({
+    message: `User Created Successfully`,
+    user: newUser,
+  });
+});
+
+app.get(`/user`, (req, res) => {
+  res.status(200).json(users);
 });
 
 // = Middleware To Handle Validation Errors =
