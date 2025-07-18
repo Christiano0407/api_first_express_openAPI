@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   description: This is a my first API with OpenAPI 3.1.1
 servers:
-  - url: https://localhost:3000
+  - url: http://localhost:3000
     description: Server is running in port | Production server
 paths:
   /hello:
@@ -17,6 +17,91 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelloWorldResponse"
+        "400":
+          description: bad request | Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+                    example: Invalid request parameters
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message
+                    example: Internal Server Error | Something went wrong
+  /user:
+    post:
+      summary: Create a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the user
+                  example: Alma Natalia
+                email:
+                  type: string
+                  description: The email of the user.
+                  example: almaNat@example.com
+      responses:
+        "201":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: the unique identifier of the user
+                    example: 1
+                  name:
+                    type: string
+                    description: the name of the user
+                    example: Alma Natalia
+                  email:
+                    type: string
+                    description: the email of the user
+                    example: almaNat@example.com
+    get:
+      summary: Get ALL users
+      responses:
+        "200":
+          description: User retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      description: the unique identifier of the user
+                      example: 1
+                    name:
+                      type: string
+                      description: the name of the user
+                      example: Alma Natalia
+                    email:
+                      type: string
+                      description: the email of the user
+                      example: almaNat@example.com
+
 components:
   schemas:
     HelloWorldResponse:
