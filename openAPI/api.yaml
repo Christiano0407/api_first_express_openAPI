@@ -17,6 +17,28 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelloWorldResponse"
+        "400":
+          description: bad request | Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    description: Error message
+                    example: Invalid request parameters
+        "500":
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message
+                    example: Internal Server Error | Something went wrong
 components:
   schemas:
     HelloWorldResponse:
