@@ -92,15 +92,14 @@ app.get(`/user`, (req, res) => {
 app.put(`/user/:id`, (req, res) => {
   const { id } = req.params; // Get ID of parameters of URL
   const { name, email } = req.body; // GET the Data of Body request
-
+  const errors = {};
+  const updateFields = {};  
   const userIndex = users.findIndex((user) => user.id === id); // Find User By ID 
+  
   // == Not Found User ==
   if(userIndex === -1) {
     return res.status(404).json({ message: `User Not Found` }); 
   }
-  
-  const errors = {};
-  const updateFields = {};  
 
   // = Validation name of user = 
   if(name !== undefined) {
@@ -112,8 +111,43 @@ app.put(`/user/:id`, (req, res) => {
   }
   
   // Validate Email Of User 
+  if(email !== undefined) {
+    if (typeof email !== `string` || email.trim() === ``) {
+      errors.email = `email must be a non-empty string`; 
+    } else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      errors.email = `email format is invalid`; 
+    } else {
+      updateFields.email = email; 
+    }
+  }
 
+  // Errors Of Validations To Fields, send 400 (status)
+  if(Object.keys(updateFields).length > 0) {
+    return res.status(400).json({
+      message: `Bad Request | Invalid Request Body`,
+      user: users[userIndex],
+    }); 
+  }
+
+  // Not Have Fields To Update | Request To Return successfully (200)
+  if(Object.keys(updateFields).length > 0) {
+    return res.status(200).json({
+      message: `Not Fields provided for update or no change mode`,
+      user: users[userIndex],
+    }); 
+  }
+
+  // - Update User -
+  users[userIndex] = { ...users[userIndex], ...updateFields }; 
+
+  // = Send the response '200' (status) OK, with the User Update =
+  res.status(200).json({
+    message: `User Update successfully`, 
+    user: users[userIndex],
+  }); 
 }); 
+
+// - Delete (users/{id}) Delete User -
 
 // = Middleware To Handle Validation Errors =
 app.use((err, req, res, next) => {
