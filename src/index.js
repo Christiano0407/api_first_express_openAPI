@@ -55,6 +55,14 @@ app.post(`/user`, (req, res) => {
     message: `User Created Successfully`,
     user: newUser,
   });
+
+  res.status(400).json({
+    message: `Bad Request | Invalid Request body`,
+    errors: {
+      name: `name is requires`,
+      email: `email is required`,
+    },
+  });
 });
 
 app.get(`/user`, (req, res) => {

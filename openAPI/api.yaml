@@ -18,16 +18,31 @@ paths:
               schema:
                 $ref: "#/components/schemas/HelloWorldResponse"
         "400":
-          description: bad request | Invalid request
+          description: Bad Request | Invalid Request
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  error:
+                  message:
                     type: string
-                    description: Error message
-                    example: Invalid request parameters
+                    description: General error message
+                    example: Bad Request | Invalid Request
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: Error message for name field
+                        example: name is required
+                      email:
+                        type: string
+                        description: Error message for email field
+                        example: email is required
+                required:
+                  - message
+                  - errors
+
         "500":
           description: Internal server error
           content:
