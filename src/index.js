@@ -88,6 +88,33 @@ app.get(`/user`, (req, res) => {
   res.status(200).json(users);
 });
 
+// = PUT (/user/{id}) Update User =
+app.put(`/user/:id`, (req, res) => {
+  const { id } = req.params; // Get ID of parameters of URL
+  const { name, email } = req.body; // GET the Data of Body request
+
+  const userIndex = users.findIndex((user) => user.id === id); // Find User By ID 
+  // == Not Found User ==
+  if(userIndex === -1) {
+    return res.status(404).json({ message: `User Not Found` }); 
+  }
+  
+  const errors = {};
+  const updateFields = {};  
+
+  // = Validation name of user = 
+  if(name !== undefined) {
+    if (typeof name !== `string` || name.trim() === `` ) {
+      errors.name = `name must be a non-empty string`; 
+    } else {
+      updateFields.name = name; 
+    }
+  }
+  
+  // Validate Email Of User 
+
+}); 
+
 // = Middleware To Handle Validation Errors =
 app.use((err, req, res, next) => {
   if (err.status & err.errors) {
