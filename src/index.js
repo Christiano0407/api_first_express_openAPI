@@ -6,20 +6,28 @@ import { fileURLToPath } from "url";
 import { readFileSync } from "fs";
 import OpenApiValidator from "express-openapi-validator";
 
+// === Express Server Setup === 
 const app = express();
+// = Port Server: localhost =
 const port = 3000;
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename); // Mega Root Absolute Path | Yaml
 
+// = Mega Root Absolute Path | Yaml file location =
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename); 
+
+// = Load OpenAPI specification from YAML file | Watch in Web Browser (Swagger) =
 const swaggerDocument = YAML.load(
   readFileSync(path.join(__dirname, `../openAPI/api.yaml`), `utf8`),
 );
 
-const users = []; // In-Memory Users Storage;
+// = In-Memory Users Storage; =
+const users = []; 
 
+// = Swagger UI Setup | API Documentation = 
 app.use(`/api-docs`, SwaggerUI.serve, SwaggerUI.setup(swaggerDocument));
 
-app.use(express.json()); // Middleware to parse JSON Bodies
+// = Middleware to parse JSON Bodies = 
+app.use(express.json()); 
 
 const apiSpecPath = path.join(__dirname, `../openAPI/api.yaml`);
 
@@ -32,14 +40,15 @@ app.use(
   }),
 );
 
-// ================= API EndPoints ================= //
+// ================= =========  === API EndPoints | CRUD ===  =========  ================= //
 
+// = GET (hello) =   
 app.get(`/hello`, (req, res) => {
   res
     .status(200)
     .json({ message: `Hello World with OpenAPI 3.1.1 | API First` });
 });
-
+// = POST (User) =
 app.post(`/user`, (req, res) => {
   const { name, email } = req.body;
   const errors = {}; // - Object To store validation errors -
@@ -74,7 +83,7 @@ app.post(`/user`, (req, res) => {
     });
   }
 });
-
+// = GET (User) =
 app.get(`/user`, (req, res) => {
   res.status(200).json(users);
 });
@@ -93,7 +102,7 @@ app.use((err, req, res, next) => {
     });
   }
 });
-
+// = Listen PORT =
 app.listen(port, () => {
   console.log(`Server is running in port ${port} | Production server`);
   console.log(`OpenAPI Documentation is Available ar /api-docs`);
