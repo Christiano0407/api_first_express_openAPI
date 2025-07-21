@@ -42,6 +42,7 @@ app.get(`/hello`, (req, res) => {
 
 app.post(`/user`, (req, res) => {
   const { name, email } = req.body;
+  const errors = {}; // - Object To store validation errors -
 
   const newUser = {
     id: Date.now().toString(),
@@ -51,18 +52,27 @@ app.post(`/user`, (req, res) => {
 
   users.push(newUser);
 
+  // = Validation Logic =
+  if (!name) {
+    errors.name = `name is required`;
+  }
+
+  if (!email) {
+    errors.email = `email is required`;
+  }
+
   res.status(201).json({
     message: `User Created Successfully`,
     user: newUser,
   });
 
-  res.status(400).json({
-    message: `Bad Request | Invalid Request body`,
-    errors: {
-      name: `name is requires`,
-      email: `email is required`,
-    },
-  });
+  // = If There are errors | Send request 400 =
+  if (Object.keys(errors).length > 0) {
+    res.status(400).json({
+      message: `Bad Request | Invalid Request body`,
+      errors: errors,
+    });
+  }
 });
 
 app.get(`/user`, (req, res) => {
