@@ -17,31 +17,18 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HelloWorldResponse"
+
         "400":
-          description: Bad Request | Invalid Request
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  message:
-                    type: string
-                    description: General error message
-                    example: Bad Request | Invalid Request
-                  errors:
-                    type: object
-                    properties:
-                      name:
-                        type: string
-                        description: Error message for name field
-                        example: name is required
-                      email:
-                        type: string
-                        description: Error message for email field
-                        example: email is required
-                required:
-                  - message
-                  - errors
+        description: bad request | Invalid request
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
+                  type: string
+                  description: Error message
+                  example: Invalid request parameters
 
         "500":
           description: Internal server error
@@ -54,6 +41,7 @@ paths:
                     type: string
                     description: Error message
                     example: Internal Server Error | Something went wrong
+
   /user:
     post:
       summary: Create a new user
@@ -92,6 +80,32 @@ paths:
                     type: string
                     description: the email of the user
                     example: almaNat@example.com
+        "400":
+          description: Bad Request | Invalid Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: General error message
+                    example: Bad Request | Invalid Request
+                  errors:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: Error message for name field
+                        example: name is required
+                      email:
+                        type: string
+                        description: Error message for email field
+                        example: email is required
+                required:
+                  - message
+                  - errors
+
     get:
       summary: Get ALL users
       responses:
