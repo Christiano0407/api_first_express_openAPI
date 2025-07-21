@@ -10,9 +10,9 @@ const app = express();
 const port = 3000;
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename); // Mega Root Absolute Path | Yaml
-
+// == Load OpenAPI Specification from YAML File To WEB == //
 const swaggerDocument = YAML.load(
-  readFileSync(path.join(__dirname, `../openAPI/api.yaml`), `utf8`),
+  readFileSync(path.join(__dirname, `../openAPI/api.yaml`), `utf8`), 
 );
 
 const users = []; // In-Memory Users Storage;
@@ -21,8 +21,8 @@ app.use(`/api-docs`, SwaggerUI.serve, SwaggerUI.setup(swaggerDocument));
 
 app.use(express.json()); // Middleware to parse JSON Bodies
 
-const apiSpecPath = path.join(__dirname, `../openAPI/api.yaml`);
-
+const apiSpecPath = path.join(__dirname, `../openAPI/api.yaml`); // == Root Absolute Path Open API  == //
+// == OpenAPI Validator Middlewares | Request == //
 app.use(
   OpenApiValidator.middleware({
     apiSpec: apiSpecPath,
@@ -32,7 +32,7 @@ app.use(
   }),
 );
 
-// ================= API EndPoints ================= //
+// ================= ==== OPEN API EndPoints [GET | POST | UPDATE | DELETE] ==== ================= //
 
 app.get(`/hello`, (req, res) => {
   res
@@ -55,6 +55,7 @@ app.post(`/user`, (req, res) => {
     message: `User Created Successfully`,
     user: newUser,
   });
+
 });
 
 app.get(`/user`, (req, res) => {

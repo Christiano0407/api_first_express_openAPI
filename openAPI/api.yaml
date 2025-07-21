@@ -77,6 +77,7 @@ paths:
                     type: string
                     description: the email of the user
                     example: almaNat@example.com
+    
     get:
       summary: Get ALL users
       responses:
