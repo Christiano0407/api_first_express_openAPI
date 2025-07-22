@@ -20,16 +20,16 @@ paths:
                 $ref: "#/components/schemas/HelloWorldResponse"
 
         "400":
-        description: bad request | Invalid request
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                error:
-                  type: string
-                  description: Error message
-                  example: Invalid request parameters
+          description: bad request | Invalid request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Error message
+                    example: Invalid request parameters
 
         "500":
           description: Internal server error
@@ -86,9 +86,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: array
-                  items:
-                    $ref: "#/components/schemas/User"
+                  $ref: "#/components/schemas/User"
   /user/{id}:
     parameters:
       - in: path
@@ -119,7 +117,8 @@ paths:
           description: User update successfully
           content:
             application/json:
-              schema: $ref "#/components/schemas/User"
+              schema:
+                $ref: "#/components/schemas/User"
         "400":
           description: Bad Request | Invalid Request
           content:
@@ -137,6 +136,12 @@ paths:
       responses:
         "204":
           description: User deleted successfully (No Content)
+        "400":
+          description: User Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundError"
         "404":
           description: User Not Found
           content:
