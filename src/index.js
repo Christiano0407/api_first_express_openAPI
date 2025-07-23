@@ -5,6 +5,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { readFileSync } from "fs";
 import OpenApiValidator from "express-openapi-validator";
+//import { error } from "console";
 
 // === Express Server Setup ===
 const app = express();
@@ -53,14 +54,6 @@ app.post(`/user`, (req, res) => {
   const { name, email } = req.body;
   const errors = {}; // - Object To store validation errors -
 
-  const newUser = {
-    id: Date.now().toString(),
-    name,
-    email,
-  };
-
-  users.push(newUser);
-
   // = Validation Logic =
   if (!name) {
     errors.name = `name is required`;
@@ -70,11 +63,6 @@ app.post(`/user`, (req, res) => {
     errors.email = `email is required`;
   }
 
-  res.status(201).json({
-    message: `User Created Successfully`,
-    user: newUser,
-  });
-
   // = If There are errors | Send request 400 =
   if (Object.keys(errors).length > 0) {
     res.status(400).json({
@@ -82,6 +70,19 @@ app.post(`/user`, (req, res) => {
       errors: errors,
     });
   }
+
+  const newUser = {
+    id: Date.now().toString(),
+    name,
+    email,
+  };
+
+  users.push(newUser);
+
+  res.status(201).json({
+    message: `User Created Successfully`,
+    user: newUser,
+  });
 });
 // = GET (User) =
 app.get(`/user`, (req, res) => {
@@ -90,18 +91,25 @@ app.get(`/user`, (req, res) => {
 
 // == GET Users/:id
 app.get(`/user/:id`, (req, res) => {
-  const { id } = req.params;
-  // = Convert ID in Number =
-  //const numConId = Number(id);
+  try {
+    const { id } = req.params;
+    // = Convert ID in Number =
+    //const numConId = Number(id);
+    // = Found the User & compare with your ID =
+    const foundUser = users.find((user) => user.id === id);
 
-  // = Found the User & compare with your ID =
-  const foundUser = users.find((user) => user.id === id);
-  if (!foundUser) {
-    res.status(400).json({
-      message: `User Not Found`,
-    });
+    if (!foundUser) {
+      res.status(404).json({
+        message: `User Not Found`,
+      });
+    }
+
+    res.status(200).json(foundUser);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: `Internal Server Error`, details: err.message });
   }
-  res.status(200).json(foundUser);
 });
 
 // = PUT (/user/{id}) Update User =
@@ -111,6 +119,7 @@ app.put(`/user/:id`, (req, res) => {
     const { name, email } = req.body; // GET the Data of Body request
     const errors = {};
     const updateFields = {};
+
     const userIndex = users.findIndex((user) => user.id === id); // Find User By ID
 
     // == Not Found User ==
@@ -147,21 +156,20 @@ app.put(`/user/:id`, (req, res) => {
     }
 
     // Not Have Fields To Update | Request To Return successfully (200)
-    if (Object.keys(updateFields).length > 0) {
-      return res.status(200).json({
-        message: `Not Fields provided for update or no change mode`,
-        user: users[userIndex],
-      });
+    if (Object.keys(updateFields).length === 0) {
+      return res.status(200).json({ user: users[userIndex] });
     }
+
+    /* if (Object.keys(userIndex === -1)) {
+      return res.status(404).json({ message: `User Not Found` });
+    } */
 
     // - Update User -
     users[userIndex] = { ...users[userIndex], ...updateFields };
 
     // = Send the response '200' (status) OK, with the User Update =
-    res.status(200).json({
-      message: `User Update successfully`,
-      user: users[userIndex],
-    });
+    console.log(`PUT /user/:id - User updated. Returning:`, users[userIndex]); // DEBUG LOG
+    res.status(200).json({ user: users[userIndex] });
   } catch (error) {
     console.log(`Error In Put /user/:id`, error);
     res.status(500).json({
@@ -178,7 +186,7 @@ app.delete(`/user/:id`, (req, res) => {
   const findIndex = users.findIndex((user) => user.id === id);
 
   if (findIndex === -1) {
-    return res.status(400).json({
+    return res.status(404).json({
       message: `User Not Found`,
     });
   }
@@ -198,7 +206,7 @@ app.use((err, req, res, next) => {
   } else {
     res.status(500).json({
       message: `Internal Server Error`,
-      errors: err.message || `Something went wrong`,
+      errors: { general: err.message || `Something went wrong` },
     });
   }
 });
