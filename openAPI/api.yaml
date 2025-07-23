@@ -67,24 +67,7 @@ paths:
           content:
             application/json:
               schema:
-<<<<<<< HEAD
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: the unique identifier of the user
-                    example: 1
-                  name:
-                    type: string
-                    description: the name of the user
-                    example: Alma Natalia
-                  email:
-                    type: string
-                    description: the email of the user
-                    example: almaNat@example.com
-    
-=======
-                $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/User" # Resuelto el conflicto de fusión aquí
 
         "400":
           description: Bad Request | Invalid Request
@@ -93,7 +76,6 @@ paths:
               schema:
                 $ref: "#/components/schemas/BadRequestError"
 
->>>>>>> apiFirst/openAPI
     get:
       summary: Get ALL users
       responses:
@@ -234,9 +216,7 @@ components:
               type: string
               description: error message for email field
               example: email is required
-        additionalProperties:
-          type: string
-          description: Additional properties are not allowed
+      additionalProperties: false # Corregido: para no permitir propiedades adicionales
       required:
         - message
         - errors
