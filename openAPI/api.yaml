@@ -95,6 +95,27 @@ paths:
           type: string
         required: true
         description: The unique identifier of the user
+    get:
+      summary: Get user By ID
+      responses:
+        "200":
+          description: User retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: Bad Request | Invalid ID format or other client error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequestError"
+        "404":
+          description: User Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFoundError"
     put:
       summary: Update a user by ID (An existing User)
       requestBody:
