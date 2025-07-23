@@ -67,7 +67,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: "#/components/schemas/User" # <-- Conflicto de fusión resuelto aquí
 
         "400":
           description: Bad Request | Invalid Request
@@ -216,9 +216,7 @@ components:
               type: string
               description: error message for email field
               example: email is required
-        additionalProperties:
-          type: string
-          description: Additional properties are not allowed
+      additionalProperties: false # <-- Corregido: para no permitir propiedades adicionales
       required:
         - message
         - errors
