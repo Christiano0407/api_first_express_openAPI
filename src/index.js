@@ -5,24 +5,33 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { readFileSync } from "fs";
 import OpenApiValidator from "express-openapi-validator";
+//import { error } from "console";
 
+// === Express Server Setup ===
 const app = express();
+// = Port Server: localhost =
 const port = 3000;
+
+// = Mega Root Absolute Path | Yaml file location =
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename); // Mega Root Absolute Path | Yaml
-// == Load OpenAPI Specification from YAML File To WEB == //
+const __dirname = path.dirname(__filename);
+
+// = Load OpenAPI specification from YAML file | Watch in Web Browser (Swagger) =
 const swaggerDocument = YAML.load(
-  readFileSync(path.join(__dirname, `../openAPI/api.yaml`), `utf8`), 
+  readFileSync(path.join(__dirname, `../openAPI/api.yaml`), `utf8`),
 );
 
-const users = []; // In-Memory Users Storage;
+// = In-Memory Users Storage; =
+const users = [];
 
+// = Swagger UI Setup | API Documentation =
 app.use(`/api-docs`, SwaggerUI.serve, SwaggerUI.setup(swaggerDocument));
 
-app.use(express.json()); // Middleware to parse JSON Bodies
+// = Middleware to parse JSON Bodies | Parse (Data Structure) =
+app.use(express.json());
 
-const apiSpecPath = path.join(__dirname, `../openAPI/api.yaml`); // == Root Absolute Path Open API  == //
-// == OpenAPI Validator Middlewares | Request == //
+const apiSpecPath = path.join(__dirname, `../openAPI/api.yaml`);
+
 app.use(
   OpenApiValidator.middleware({
     apiSpec: apiSpecPath,
@@ -32,16 +41,35 @@ app.use(
   }),
 );
 
-// ================= ==== OPEN API EndPoints [GET | POST | UPDATE | DELETE] ==== ================= //
+// ================= =========  === API EndPoints | CRUD ===  =========  ================= //
 
+// = GET (hello) =
 app.get(`/hello`, (req, res) => {
   res
     .status(200)
     .json({ message: `Hello World with OpenAPI 3.1.1 | API First` });
 });
-
+// = POST (User) =
 app.post(`/user`, (req, res) => {
   const { name, email } = req.body;
+  const errors = {}; // - Object To store validation errors -
+
+  // = Validation Logic =
+  if (!name) {
+    errors.name = `name is required`;
+  }
+
+  if (!email) {
+    errors.email = `email is required`;
+  }
+
+  // = If There are errors | Send request 400 =
+  if (Object.keys(errors).length > 0) {
+    res.status(400).json({
+      message: `Bad Request | Invalid Request body`,
+      errors: errors,
+    });
+  }
 
   const newUser = {
     id: Date.now().toString(),
@@ -55,11 +83,117 @@ app.post(`/user`, (req, res) => {
     message: `User Created Successfully`,
     user: newUser,
   });
-
 });
-
+// = GET (User) =
 app.get(`/user`, (req, res) => {
   res.status(200).json(users);
+});
+
+// == GET Users/:id
+app.get(`/user/:id`, (req, res) => {
+  try {
+    const { id } = req.params;
+    // = Convert ID in Number =
+    //const numConId = Number(id);
+    // = Found the User & compare with your ID =
+    const foundUser = users.find((user) => user.id === id);
+
+    if (!foundUser) {
+      res.status(404).json({
+        message: `User Not Found`,
+      });
+    }
+
+    res.status(200).json(foundUser);
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: `Internal Server Error`, details: err.message });
+  }
+});
+
+// = PUT (/user/{id}) Update User =
+app.put(`/user/:id`, (req, res) => {
+  try {
+    const { id } = req.params; // Get ID of parameters of URL
+    const { name, email } = req.body; // GET the Data of Body request
+    const errors = {};
+    const updateFields = {};
+
+    const userIndex = users.findIndex((user) => user.id === id); // Find User By ID
+
+    // == Not Found User ==
+    if (userIndex === -1) {
+      return res.status(404).json({ message: `User Not Found` });
+    }
+
+    // = Validation name of user =
+    if (name !== undefined) {
+      if (typeof name !== `string` || name.trim() === ``) {
+        errors.name = `name must be a non-empty string`;
+      } else {
+        updateFields.name = name;
+      }
+    }
+
+    // Validate Email Of User
+    if (email !== undefined) {
+      if (typeof email !== `string` || email.trim() === ``) {
+        errors.email = `email must be a non-empty string`;
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errors.email = `email format is invalid`;
+      } else {
+        updateFields.email = email;
+      }
+    }
+
+    // Errors Of Validations To Fields, send 400 (status)
+    if (Object.keys(errors).length > 0) {
+      return res.status(400).json({
+        message: `Bad Request | Invalid Request Body`,
+        errors: errors,
+      });
+    }
+
+    // Not Have Fields To Update | Request To Return successfully (200)
+    if (Object.keys(updateFields).length === 0) {
+      return res.status(200).json({ user: users[userIndex] });
+    }
+
+    /* if (Object.keys(userIndex === -1)) {
+      return res.status(404).json({ message: `User Not Found` });
+    } */
+
+    // - Update User -
+    users[userIndex] = { ...users[userIndex], ...updateFields };
+
+    // = Send the response '200' (status) OK, with the User Update =
+    console.log(`PUT /user/:id - User updated. Returning:`, users[userIndex]); // DEBUG LOG
+    res.status(200).json({ user: users[userIndex] });
+  } catch (error) {
+    console.log(`Error In Put /user/:id`, error);
+    res.status(500).json({
+      message: `Internal Server Error`,
+      details: error.message,
+    });
+  }
+});
+
+// - Delete (users/{id}) Delete User -
+app.delete(`/user/:id`, (req, res) => {
+  const { id } = req.params;
+
+  const findIndex = users.findIndex((user) => user.id === id);
+
+  if (findIndex === -1) {
+    return res.status(404).json({
+      message: `User Not Found`,
+    });
+  }
+
+  users.splice(findIndex, 1);
+
+  res.status(204).send(); // Not Content
 });
 
 // = Middleware To Handle Validation Errors =
@@ -72,11 +206,11 @@ app.use((err, req, res, next) => {
   } else {
     res.status(500).json({
       message: `Internal Server Error`,
-      errors: err.message || `Something went wrong`,
+      errors: { general: err.message || `Something went wrong` },
     });
   }
 });
-
+// = Listen PORT =
 app.listen(port, () => {
   console.log(`Server is running in port ${port} | Production server`);
   console.log(`OpenAPI Documentation is Available ar /api-docs`);

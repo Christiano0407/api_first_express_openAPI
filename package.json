@@ -7,6 +7,7 @@
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint .",
+    "warning": "node --trace-warnings",
     "start": "node src/index.js",
     "dev": "node --watch src/index.js"
   },
