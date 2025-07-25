@@ -1,11 +1,15 @@
 openapi: 3.1.1
 info:
-  title: API FIrst
-  version: 1.0.0
+  title: API FIrst OpenAPi
+  version: 1.1.0 # = Update Version API =
   description: This is a my first API with OpenAPI 3.1.1
 servers:
-  - url: http://localhost:3000
+  - url: http://localhost:3000/api/v1 # = Update Version PORT & API =
     description: Server is running in port | Production server
+
+tags: 
+  - name: API_v1
+    description: Develop & Created API with OpenAPI Structure
 
 paths:
   /hello:
