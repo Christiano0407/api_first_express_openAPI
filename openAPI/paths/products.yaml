@@ -11,6 +11,6 @@
           schema:
             type: array
             items:
-              $ref: "../components/schemas/Product.yml" # Note: Root Relative
+              $ref: "../components/schemas/Product.yaml" # Note: Root Relative
     "500":
-      $ref: "../components/responses/StandardError.yml" # Root Response Error 'server:500'
+      $ref: "../components/responses/StandardError.yaml" # Root Response Error 'server:500'

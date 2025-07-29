@@ -22,14 +22,14 @@
           content:
             application/json:
               schema:
-                $ref: "../components/schemas/User.yml" # <-- Conflicto de fusión resuelto aquí
+                $ref: "../components/schemas/User.yaml" # <-- Conflicto de fusión resuelto aquí
 
         "400":
           description: Bad Request | Invalid Request
           content:
             application/json:
               schema:
-                $ref: "../components/responses/BadRequest.yml"
+                $ref: "../components/responses/BadRequest.yaml"
 
     get:
       summary: Get ALL users
@@ -41,7 +41,7 @@
               schema:
                 type: array
                 items:
-                  $ref: "../components/schemas/User.yml"
+                  $ref: "../components/schemas/User.yaml"
   /user/{id}:
     parameters:
       - in: path
@@ -58,19 +58,19 @@
           content:
             application/json:
               schema:
-                $ref: "../components/schemas/User.yml"
+                $ref: "../components/schemas/User.yaml"
         "400":
           description: Bad Request | Invalid ID format or other client error
           content:
             application/json:
               schema:
-                $ref: "../components/responses/BadRequest.yml"
+                $ref: "../components/responses/BadRequest.yaml"
         "404":
           description: User Not Found
           content:
             application/json:
               schema:
-                $ref: "../components/responses/NotFoundError.yml"
+                $ref: "../components/responses/NotFoundError.yaml"
     put:
       summary: Update a user by ID (An existing User)
       requestBody:
@@ -94,19 +94,19 @@
           content:
             application/json:
               schema:
-                $ref: "../components/schemas/User.yml"
+                $ref: "../components/schemas/User.yaml"
         "400":
           description: Bad Request | Invalid Request
           content:
             application/json:
               schema:
-                $ref: "../components/responses/BadRequest.yml"
+                $ref: "../components/responses/BadRequest.yaml"
         "404":
           description: User Not Found
           content:
             application/json:
               schema:
-                $ref: "../components/responses/NotFoundError.yml"
+                $ref: "../components/responses/NotFoundError.yaml"
     delete:
       summary: Delete a user by ID (An existing User)
       responses:
@@ -117,10 +117,10 @@
           content:
             application/json:
               schema:
-                $ref: "../components/responses/BadRequest.yml"
+                $ref: "../components/responses/BadRequest.yaml"
         "404":
           description: User Not Found
           content:
             application/json:
               schema:
-                $ref: "../components/responses/NotFoundError.yml"
+                $ref: "../components/responses/NotFoundError.yaml"

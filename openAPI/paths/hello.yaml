@@ -7,7 +7,7 @@
           content:
             application/json:
               schema:
-                $ref: "../components/schemas/HelloWorldResponse.yml"
+                $ref: "../components/schemas/HelloWorldResponse.yaml"
 
         "400":
           description: bad request | Invalid request
@@ -26,4 +26,4 @@
           content:
             application/json:
               schema:
-                $ref: "../components/responses/StandardError.yml"
+                $ref: "../components/responses/StandardError.yaml"

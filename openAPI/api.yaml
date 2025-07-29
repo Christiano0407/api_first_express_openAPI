@@ -12,17 +12,17 @@ tags:
     description: Develop & Created API with OpenAPI Structure
 
 paths:
-  $ref: "./paths/hello.yml"
+  $ref: "./paths/hello.yaml"
   $ref: "./paths/user.yaml"
-  $ref: "./paths/products.yml"
+  $ref: "./paths/products.yaml"
 
 components:
   schemas:
     Hello: 
-      $ref: "./components/schemas/HelloWorldResponse.YAML"
+      $ref: "./components/schemas/HelloWorldResponse.yaml"
     User:
-      $ref: "./components/schemas/User.yml"
+      $ref: "./components/schemas/User.yaml"
     Product: 
-      $ref: "./components/schemas/Product.yml"
+      $ref: "./components/schemas/Product.yaml"
     ProductInput:
-      $ref: "./components/schemas/ProductInput.yml"
+      $ref: "./components/schemas/ProductInput.yaml"
