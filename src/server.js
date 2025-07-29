@@ -1,12 +1,14 @@
 import express from "express";
-import dotenv from `dotenv`; 
-import cors from `cors`; 
+import dotenv from "dotenv"; 
+import cors from "cors"; 
 import SwaggerUI from "swagger-ui-express";
 import YAML from "js-yaml";
 import path from "path";
 import { fileURLToPath } from "url";
 import { readFileSync } from "fs";
 import OpenApiValidator from "express-openapi-validator";
+import productRoutes from "./routes/product"; 
+
 //import { error } from "console";
 
 // === Express Server Setup ===
@@ -17,6 +19,9 @@ const port = 3000;
 // = Mega Root Absolute Path | Yaml file location =
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// = env (Variable Environment ENV) = 
+dotenv.config(); 
 
 // = Load OpenAPI specification from YAML file | Watch in Web Browser (Swagger) =
 const swaggerDocument = YAML.load(
@@ -29,8 +34,9 @@ const users = [];
 // = Swagger UI Setup | API Documentation =
 app.use(`/api-docs`, SwaggerUI.serve, SwaggerUI.setup(swaggerDocument));
 
-// = Middleware to parse JSON Bodies | Parse (Data Structure) =
+// === Middleware to parse JSON Bodies | Parse (Data Structure) ===
 app.use(express.json());
+app.use(cors()); 
 
 const apiSpecPath = path.join(__dirname, `../openAPI/api.yaml`);
 
@@ -42,6 +48,9 @@ app.use(
     validateResponses: true, // Validate Response
   }),
 );
+
+// === Routes Products ===
+app.use(`/api/product`, productRoutes);
 
 // ================= =========  === API EndPoints | CRUD ===  =========  ================= //
 

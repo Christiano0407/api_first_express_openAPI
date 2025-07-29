@@ -1,0 +1,16 @@
+/products: 
+  get:
+    summary: Obtener todos los productos
+  tags:
+    - Producto
+  response:
+    "200":
+      description: Lista de productos obtenidos exitosamente
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "../components/schemas/Product.yml" # Note: Root Relative
+    "500":
+      $ref: "../components/responses/StandardError.yml" # Root Response Error 'server:500'
