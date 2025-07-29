@@ -12,9 +12,14 @@ tags:
     description: Develop & Created API with OpenAPI Structure
 
 paths:
-  $ref: "./paths/hello.yaml"
-  $ref: "./paths/user.yaml"
-  $ref: "./paths/products.yaml"
+  /hello:
+    $ref: "./paths/hello.yaml#/hello"
+  /user:
+    $ref: "./paths/user.yaml#/user"
+  "/user/{id}":
+    $ref: "./paths/user.yaml#/user/{id}"
+  /products:
+    $ref: "./paths/products.yaml/products"
 
 components:
   schemas:
@@ -26,3 +31,10 @@ components:
       $ref: "./components/schemas/Product.yaml"
     ProductInput:
       $ref: "./components/schemas/ProductInput.yaml"
+  responses:
+    BadRequestError:
+      $ref: "./components/responses/BadRequest.yaml#/BadRequestError"
+    NotFoundError:
+      $ref: "./components/responses/NotFoundError.yaml#/NotFoundError"
+    StandardError:
+      $ref: "./components/responses/StandardError.yaml#/StandardError"
