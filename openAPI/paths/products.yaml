@@ -1,4 +1,4 @@
-/products: 
+/products:
   get:
     summary: Obtener todos los productos
   tags:
@@ -15,23 +15,23 @@
     "500":
       $ref: "../components/responses/StandardError.yaml" # Root Response Error 'server:500'
   post:
-    summary: create new product 
-    requestBody: 
+    summary: create new product
+    requestBody:
       required: true
-      content: 
+      content:
         application/json:
           schema:
             $ref: "../components/schemas/ProductInput.yaml"
-    response: 
+    response:
       "201":
         description: Product created successfully
-        content: 
+        content:
           application/json:
             schema:
               $ref: "../components/schemas/ProductInput.yaml"
       "400":
         description: Bad Request | Invalid Request
-        content: 
+        content:
           application/json:
             schema:
               $ref: "../components/responses/BadRequest.yaml"

@@ -16,7 +16,7 @@ paths:
     $ref: "./paths/hello.yaml#/hello" # JSON Pointer
   /user:
     $ref: "./paths/user.yaml#/user"
-  '/user/{id}':
+  "/user/{id}":
     $ref: "./paths/user.yaml#/user/{id}"
   /products:
     $ref: "./paths/products.yaml#/products"

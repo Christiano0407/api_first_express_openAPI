@@ -1,5 +1,5 @@
-description: Standard Error Response 
-content: 
-  application/json: 
-    schema: 
+description: Standard Error Response
+content:
+  application/json:
+    schema:
       $ref: "../schemas/Error.yml" # Referencia al esquema de Error

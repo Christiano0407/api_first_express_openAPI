@@ -1,5 +1,5 @@
-import express from "express"; 
-const router = express.Router(); 
+import express from "express";
+const router = express.Router();
 
 // = In-Memory Users Storage; =
 const users = [];
@@ -152,4 +152,4 @@ router.delete(`/user/:id`, (req, res) => {
   res.status(204).send(); // Not Content
 });
 
-export default router; 
+export default router;

@@ -1,6 +1,6 @@
 type: object
-properties: 
-  error: 
+properties:
+  error:
     type: string
-    description: Error Message 
+    description: Error Message
     example: "Internal Server Error To 'Get' Product"

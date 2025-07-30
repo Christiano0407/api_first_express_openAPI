@@ -1,126 +1,126 @@
 /user:
-    post:
-      summary: Create a new user
-      requestBody:
-        required: true
+  post:
+    summary: Create a new user
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the user
+                example: Alma Natalia
+              email:
+                type: string
+                description: The email of the user.
+                example: almaNat@example.com
+    responses:
+      "201":
+        description: User created successfully
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: The name of the user
-                  example: Alma Natalia
-                email:
-                  type: string
-                  description: The email of the user.
-                  example: almaNat@example.com
-      responses:
-        "201":
-          description: User created successfully
-          content:
-            application/json:
-              schema:
-                $ref: "../components/schemas/User.yaml" # <-- Conflicto de fusión resuelto aquí
+              $ref: "../components/schemas/User.yaml" # <-- Conflicto de fusión resuelto aquí
 
-        "400":
-          description: Bad Request | Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: "../components/responses/BadRequest.yaml"
-
-    get:
-      summary: Get ALL users
-      responses:
-        "200":
-          description: User retrieved successfully
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "../components/schemas/User.yaml"
-  /user/{id}:
-    parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-        required: true
-        description: The unique identifier of the user
-    get:
-      summary: Get user By ID
-      responses:
-        "200":
-          description: User retrieved successfully
-          content:
-            application/json:
-              schema:
-                $ref: "../components/schemas/User.yaml"
-        "400":
-          description: Bad Request | Invalid ID format or other client error
-          content:
-            application/json:
-              schema:
-                $ref: "../components/responses/BadRequest.yaml"
-        "404":
-          description: User Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "../components/responses/NotFoundError.yaml"
-    put:
-      summary: Update a user by ID (An existing User)
-      requestBody:
-        required: true
+      "400":
+        description: Bad Request | Invalid Request
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  description: The new name of the user (Optional)
-                  example: Alma updated
-                email:
-                  type: string
-                  description: The new email of the user (Optional)
-                  example: almaUpdate@example.com
-      responses:
-        "200":
-          description: User update successfully
-          content:
-            application/json:
-              schema:
+              $ref: "../components/responses/BadRequest.yaml"
+
+  get:
+    summary: Get ALL users
+    responses:
+      "200":
+        description: User retrieved successfully
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
                 $ref: "../components/schemas/User.yaml"
-        "400":
-          description: Bad Request | Invalid Request
-          content:
-            application/json:
-              schema:
-                $ref: "../components/responses/BadRequest.yaml"
-        "404":
-          description: User Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "../components/responses/NotFoundError.yaml"
-    delete:
-      summary: Delete a user by ID (An existing User)
-      responses:
-        "204":
-          description: User deleted successfully (No Content)
-        "400":
-          description: User Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "../components/responses/BadRequest.yaml"
-        "404":
-          description: User Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "../components/responses/NotFoundError.yaml"
+/user/{id}:
+  parameters:
+    - in: path
+      name: id
+      schema:
+        type: string
+      required: true
+      description: The unique identifier of the user
+  get:
+    summary: Get user By ID
+    responses:
+      "200":
+        description: User retrieved successfully
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/User.yaml"
+      "400":
+        description: Bad Request | Invalid ID format or other client error
+        content:
+          application/json:
+            schema:
+              $ref: "../components/responses/BadRequest.yaml"
+      "404":
+        description: User Not Found
+        content:
+          application/json:
+            schema:
+              $ref: "../components/responses/NotFoundError.yaml"
+  put:
+    summary: Update a user by ID (An existing User)
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The new name of the user (Optional)
+                example: Alma updated
+              email:
+                type: string
+                description: The new email of the user (Optional)
+                example: almaUpdate@example.com
+    responses:
+      "200":
+        description: User update successfully
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/User.yaml"
+      "400":
+        description: Bad Request | Invalid Request
+        content:
+          application/json:
+            schema:
+              $ref: "../components/responses/BadRequest.yaml"
+      "404":
+        description: User Not Found
+        content:
+          application/json:
+            schema:
+              $ref: "../components/responses/NotFoundError.yaml"
+  delete:
+    summary: Delete a user by ID (An existing User)
+    responses:
+      "204":
+        description: User deleted successfully (No Content)
+      "400":
+        description: User Not Found
+        content:
+          application/json:
+            schema:
+              $ref: "../components/responses/BadRequest.yaml"
+      "404":
+        description: User Not Found
+        content:
+          application/json:
+            schema:
+              $ref: "../components/responses/NotFoundError.yaml"
