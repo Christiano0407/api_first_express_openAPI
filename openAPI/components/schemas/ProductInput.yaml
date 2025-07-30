@@ -71,3 +71,6 @@ properties:
     - nombre_producto
     - precio_usd
     - sku
+    - categoria
+    - stock_disponible
+    - marca

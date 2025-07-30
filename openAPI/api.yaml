@@ -7,27 +7,27 @@ servers:
   - url: http://localhost:3000/api/v1 # = Update Version PORT & API =
     description: Server is running in port | Production server
 
-tags: 
+tags:
   - name: API_v1
     description: Develop & Created API with OpenAPI Structure
 
 paths:
   /hello:
-    $ref: "./paths/hello.yaml#/hello"
+    $ref: "./paths/hello.yaml#/hello" # JSON Pointer
   /user:
     $ref: "./paths/user.yaml#/user"
-  "/user/{id}":
+  '/user/{id}':
     $ref: "./paths/user.yaml#/user/{id}"
   /products:
-    $ref: "./paths/products.yaml/products"
+    $ref: "./paths/products.yaml#/products"
 
 components:
   schemas:
-    Hello: 
+    Hello:
       $ref: "./components/schemas/HelloWorldResponse.yaml"
     User:
       $ref: "./components/schemas/User.yaml"
-    Product: 
+    Product:
       $ref: "./components/schemas/Product.yaml"
     ProductInput:
       $ref: "./components/schemas/ProductInput.yaml"
@@ -36,5 +36,5 @@ components:
       $ref: "./components/responses/BadRequest.yaml#/BadRequestError"
     NotFoundError:
       $ref: "./components/responses/NotFoundError.yaml#/NotFoundError"
-    StandardError:
-      $ref: "./components/responses/StandardError.yaml#/StandardError"
+    StandardErrorResponse:
+      $ref: "./components/responses/StandardError.yaml#/StandardErrorResponse"

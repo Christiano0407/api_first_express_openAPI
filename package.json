@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "type": "module",
   "description": "We created an API with the OpenAPI methodology. Use Express Js and Virtual environments.",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint .",
     "warning": "node --trace-warnings",
-    "start": "node src/index.js",
-    "dev": "node --watch src/index.js"
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -24,7 +24,7 @@
     "prettier": "^3.6.2",
     "swagger-ui": "^3.29.0",
     "swagger-ui-express": "^5.0.1",
-    "yamljs": "^0.3.0"
+    "yamljs": "^0.3.0" 
   },
   "devDependencies": {
     "@eslint/js": "^9.31.0",

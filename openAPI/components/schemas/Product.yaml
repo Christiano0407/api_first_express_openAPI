@@ -68,6 +68,10 @@ properties:
     description: URL de una imagen principal del producto.
     example: https://ejemplo.com/imagenes/laptop_ub.jpg
   required: 
+    - id_producto
     - nombre_producto
     - precio_usd
     - sku
+    - categoria
+    - stock_disponible
+    - activo
