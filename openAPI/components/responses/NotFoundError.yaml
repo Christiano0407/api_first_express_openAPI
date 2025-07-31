@@ -1,9 +1,8 @@
-NotFoundError:
-  type: object
-  properties:
-    message:
-      type: string
-      description: Error message indicating resource not found
-      example: User not found
-  required:
-    - message
+type: object
+properties:
+  message:
+    type: string
+    description: Error message indicating resource not found
+    example: User not found
+required:
+  - message

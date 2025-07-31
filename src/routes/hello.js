@@ -9,9 +9,9 @@ router.get(`/`, (req, res) => {
 });
 
 // = endpoint: /api/v1/hello/:name =
-router.get(`/:name`, (req, res) => {
+/* router.get(`/:name`, (req, res) => {
   const { name } = req.params;
   res.status(200).json({ message: `Hello ${name}` });
-});
+}); */
 
 export default router;

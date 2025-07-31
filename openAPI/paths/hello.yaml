@@ -1,29 +1,26 @@
-/hello:
-  get:
-    summary: Hello World with OpenAPI 3.1.1 | API First
-    responses:
-      "200":
-        description: A successful response
-        content:
-          application/json:
-            schema:
-              $ref: "../components/schemas/HelloWorldResponse.yaml"
-
-      "400":
-        description: bad request | Invalid request
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                message:
-                  type: string
-                  description: Error message
-                  example: Invalid request parameters
-
-      "500":
-        description: Internal server error
-        content:
-          application/json:
-            schema:
-              $ref: "../components/responses/StandardError.yaml"
+get:
+  summary: Hello World with OpenAPI 3.1.1 | API First
+  responses:
+    "200":
+      description: A successful response
+      content:
+        application/json:
+          schema:
+            $ref: "../components/schemas/HelloWorldResponse.yaml"
+    "400":
+      description: bad request | Invalid request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                description: Error message
+                example: Invalid request parameters
+    "500":
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: "../components/responses/StandardError.yaml"

@@ -10,16 +10,22 @@ servers:
 tags:
   - name: API_v1
     description: Develop & Created API with OpenAPI Structure
+  - name: Hello
+    description: Endpoint to Created Methods Hello
+  - name: User
+    description: Endpoint To Get and Created Methods User
+  - name: Product
+    description: Endpoint To Created and Develop Methods Of Products
 
 paths:
   /hello:
-    $ref: "./paths/hello.yaml#/hello" # JSON Pointer
+    $ref: "./paths/hello.yaml" # JSON Pointer
   /user:
-    $ref: "./paths/user.yaml#/user"
-  "/user/{id}":
-    $ref: "./paths/user.yaml#/user/{id}"
+    $ref: "./paths/user.yaml"
+  /user/{id}:
+    $ref: "./paths/user.yaml/user-by-id.yaml"
   /products:
-    $ref: "./paths/products.yaml#/products"
+    $ref: "./paths/products.yaml"
 
 components:
   schemas:
@@ -33,8 +39,8 @@ components:
       $ref: "./components/schemas/ProductInput.yaml"
   responses:
     BadRequestError:
-      $ref: "./components/responses/BadRequest.yaml#/BadRequestError"
+      $ref: "./components/responses/BadRequest.yaml"
     NotFoundError:
-      $ref: "./components/responses/NotFoundError.yaml#/NotFoundError"
+      $ref: "./components/responses/NotFoundError.yaml"
     StandardErrorResponse:
-      $ref: "./components/responses/StandardError.yaml#/StandardErrorResponse"
+      $ref: "./components/responses/StandardError.yaml"

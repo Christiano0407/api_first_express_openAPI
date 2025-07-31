@@ -1,0 +1,8 @@
+in: path
+name: id
+required: true
+description: The unique identifier of the user
+schema:
+  type: string
+  pattern: '^[0-9]+$'
+example: "123"

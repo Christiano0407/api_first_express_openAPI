@@ -1,0 +1,7 @@
+properties:
+  id_producto:
+    type: integer
+    format: int64
+    description: ID del producto
+    readonly: true
+    example: 1

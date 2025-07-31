@@ -1,0 +1,7 @@
+ parameters:
+    - in: path
+      name: id
+      schema:
+        type: string
+      required: true
+      description: The unique identifier of the user
