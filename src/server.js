@@ -33,9 +33,10 @@ const apiSpecPath = path.join(__dirname, `../openAPI/api.yaml`);
 app.use(
   OpenApiValidator.middleware({
     apiSpec: apiSpecPath,
-    ignorePaths: /api-docs/,
+    ignorePaths: /.*\/api-docs.*/,
     validateRequests: true, // Validate request: body, query, params
     validateResponses: true, // Validate Response
+    validateApiSpec: true
   }),
 );
 // === Routes Products ===
@@ -48,14 +49,21 @@ const PORT = process.env.PORT || 3000;
 // ================= =========  === API EndPoints | CRUD ===  =========  ================= //
 // = GET (API) =
 app.get(`/`, (req, res) => {
-  res.json({ message: `¡Welcome! This is a my first API with OpenAPI` });
+  res.json({ 
+    message:`¡Welcome! This is a my first API with OpenAPI`, 
+    version: `1.1.0`, 
+    documentation: `/api-docs` 
+  });
 });
+
 // = Middleware To Handle Validation Errors =
 app.use((err, req, res, next) => {
   if (err.status & err.errors) {
-    res.status(err.status).json({
+    return res.status(err.status).json({
       message: err.message,
       errors: err.errors,
+      path: req.path,
+      method: req.method
     });
   } else {
     res.status(500).json({
@@ -64,12 +72,23 @@ app.use((err, req, res, next) => {
     });
   }
 });
+
+// = 404 Handler | Endpoint =
+app.use(`*`, (req, res) => {
+  res.status(404).json({
+    message: `Error 404 | Page Not Found `,
+    path: req.originalUrl, 
+    method: req.method
+  }); 
+});  
+
 // = Listen PORT =
 app.listen(PORT, () => {
   console.log(`Server is running in port ${PORT} | Production server`);
-  console.log(`OpenAPI Documentation is Available ar /api-docs`);
-  console.log(`Open API Specification is Available at ${apiSpecPath}`);
+  console.log(`OpenAPI Documentation:http://localhost:${PORT}/api-docs`);
   console.log(
-    `Access Tp API to hello in http://localhost:${PORT}/api/v1/hello`,
+    `Access Tp API to hello in http://localhost:${PORT}/api/v1`,
   );
 });
+
+export default app; 
