@@ -30,7 +30,6 @@ const validationDataProduct = (data, isUpdate = false) => {
 export const getAllProducts = async (req, res) => {
   try {
     //const {categoria, activo, limit=10, offset=0} = req.query; 
-
     const result = await pool.query(
       `SELECT * FROM producto ORDER BY id_producto ASC`,
     );
