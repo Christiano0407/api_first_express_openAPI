@@ -2,17 +2,67 @@ get:
   summary: Get all Products
 tags:
   - Product
-response:
-  "200":
-    description: Lista de productos obtenidos exitosamente
-    content:
-      application/json:
-        schema:
-          type: array
-          items:
-            $ref: "../components/schemas/Product.yaml" # Note: Root Relative}
-  "500":
-    $ref: "../components/responses/StandardError.yaml" # Root Response Error 'server:500'
+parameters:
+    - name: categoria
+      in: query
+      description: Filter by category
+      required: false
+      schema:
+        type: string
+        example: Electrónica
+    - name: activo
+      in: query
+      description: Filter by active status
+      required: false
+      schema:
+        type: boolean
+        example: true
+    - name: limit
+      in: query
+      description: Number of products to return
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+    - name: offset
+      in: query
+      description: Number of products to skip
+      required: false
+      schema:
+        type: integer
+        minimum: 0
+        default: 0
+responses:
+    "200":
+      description: Products retrieved successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                type: array
+                items:
+                  $ref: "../components/schemas/Product.yaml"
+              meta:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                    description: Total number of products
+                  limit:
+                    type: integer
+                    description: Number of products per page
+                  offset:
+                    type: integer
+                    description: Current offset
+    "400":
+      $ref: "../components/responses/BadRequest.yaml"
+    "500":
+      $ref: "../components/responses/StandardError.yaml" # Root Response Error 'server:500'
+
 post:
   summary: create new product
   requestBody:
@@ -34,3 +84,5 @@ post:
         application/json:
           schema:
             $ref: "../components/responses/BadRequest.yaml"
+    "500":
+      $ref: "../components/responses/StandardError.yaml"

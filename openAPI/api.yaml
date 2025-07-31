@@ -37,6 +37,9 @@ components:
       $ref: "./components/schemas/Product.yaml"
     ProductInput:
       $ref: "./components/schemas/ProductInput.yaml"
+    Error:
+      $ref: "./components/schemas/Error.yaml"
+      
   responses:
     BadRequestError:
       $ref: "./components/responses/BadRequest.yaml"
