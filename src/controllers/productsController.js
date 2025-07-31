@@ -1,9 +1,36 @@
 // === Logic Develop & Logic Business Database ===
-
 import pool from "../db.js"; // = Package DB - pg =
 
+// === Validation Data Products === //
+const validationDataProduct = (data, isUpdate = false) => {
+  
+  const errors = {}; 
+  
+  if(!isUpdate) {
+    if(!data.nombre_producto || typeof nombre_producto !== `string`) {
+      errors.nombre_producto = `Error! Required the name. Please, the name is required to Get Product.`; 
+    }
+    if(!data.precio_usd || typeof data.precio_usd !== `number` || data.precio_usd <= 0) {
+      errors.precio_usd = `Error! The price is required and must be a positive number`; 
+    }
+    if(!data.sku || typeof data.sku !== `string`) {
+      errors.sku = `We have an Error. Please, add the "sku" to identify the Product`; 
+    }
+    if(!data.categoria || typeof data.categoria !== `string`) {
+      errors.categoria = `Error To Get Categoria. Required the Categoria`; 
+    }
+    if(data.stock_disponible === undefined || typeof data.stock_disponible !== `number` && data.stock_disponible <= 0) {
+      errors.stock_disponible = `Error! Required the Stock & Sorry, the Stock is Empty`; 
+    }
+  }
+  return errors; 
+}; 
+
+// === Methods Data Products === //
 export const getAllProducts = async (req, res) => {
   try {
+    //const {categoria, activo, limit=10, offset=0} = req.query; 
+
     const result = await pool.query(
       `SELECT * FROM producto ORDER BY id_producto ASC`,
     );

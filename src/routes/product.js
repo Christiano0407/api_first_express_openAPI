@@ -7,7 +7,7 @@ const router = express.Router(); // = Create an router in Express =
 // = GET =
 router.get(`/`, controllersProduct.getAllProducts);
 router.get(`/:id`, controllersProduct.getProductById);
-// = POST =
+// = POST | Created =
 router.post(`/`, controllersProduct.createProductNew);
 
 export default router;
