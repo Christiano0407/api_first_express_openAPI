@@ -27,9 +27,8 @@ const validationDataProduct = (data, isUpdate = false) => {
 }; 
 
 // === Methods Data Products === //
-export const getAllProducts = async (req, res) => {
+export const getAllProductsPlus = async (req, res) => {
   try {
-    //const {categoria, activo, limit=10, offset=0} = req.query; 
     const result = await pool.query(
       `SELECT * FROM producto ORDER BY id_producto ASC`,
     );
@@ -39,6 +38,56 @@ export const getAllProducts = async (req, res) => {
     res.status(500).json({ error: `Internal Error Server: 500` });
   }
 };
+
+export const getAllProducts = async (req, res) => {
+  try {
+    const {categoria, activo, limit=10, offset=0} = req.query; 
+  
+    let query = `SELECT * FROM producto`; // = SQL - Postgres =  
+    const queryParams = []; 
+    let paramsCount = 0; 
+
+    // = Filters =
+    if(categoria) {
+      paramsCount++; 
+      query += `AND categoria = $${paramsCount}`; 
+      queryParams.push(categoria); 
+    }
+
+    if(activo === undefined) {
+      paramsCount++; 
+      query += `AND activo = $${paramsCount}`; 
+      queryParams.push(activo === true); 
+    }
+    
+    // = Add Pagination =
+    query += `ORDER BY id_producto ASC`;
+
+    paramsCount++; 
+    query += `LIMIT $${paramsCount}`; 
+    queryParams.push(parseInt(limit));  
+
+    paramsCount++; 
+    query += `offset $${paramsCount}`; 
+    query.push(parseInt(offset)); 
+
+    // = ADD Query | Get Total Count For Metadata =
+    let countQuery = `SELECT COUNT(*) FROM producto`;
+    const queryParamsCount = [];
+    let queryParamsCount = 0;  
+
+    // === Promise ===
+    const [result, countResult] = await Promise.all([
+      pool.query(query, paramsCount)
+    ]);
+
+    res.status(200).json({}); 
+
+  }catch(err) {
+    console.error(`Error To Get Products: ${err}`); 
+  }
+
+}; 
 
 export const getProductById = async (req, res) => {
   const { id } = req.params;
