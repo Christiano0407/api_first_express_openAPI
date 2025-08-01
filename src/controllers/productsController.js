@@ -47,7 +47,8 @@ export const getAllProducts = async (req, res) => {
     const queryParams = []; 
     let paramsCount = 0; 
 
-    // = Filters =
+    // === Filters ===
+    
     if(categoria) {
       paramsCount++; 
       query += `AND categoria = $${paramsCount}`; 
@@ -60,7 +61,7 @@ export const getAllProducts = async (req, res) => {
       queryParams.push(activo === true); 
     }
     
-    // = Add Pagination =
+    // = Add Pagination = 
     query += `ORDER BY id_producto ASC`;
 
     paramsCount++; 
@@ -71,20 +72,45 @@ export const getAllProducts = async (req, res) => {
     query += `offset $${paramsCount}`; 
     query.push(parseInt(offset)); 
 
-    // = ADD Query | Get Total Count For Metadata =
+    // === ADD Query | Get Total Count For Metadata ===
+
     let countQuery = `SELECT COUNT(*) FROM producto`;
     const queryParamsCount = [];
-    let queryParamsCount = 0;  
+    let ParamsCountQuery = 0;  
+
+    if(categoria) {
+      ParamsCountQuery++; 
+      countQuery += `AND categoria $${queryParamsCount}`; 
+      queryParamsCount.push(categoria); 
+    }
+
+    if(activo === undefined) {
+      ParamsCountQuery++;
+      countQuery += `AND activo $${ParamsCountQuery}`; 
+      queryParamsCount.push(activo === true); 
+    }
 
     // === Promise ===
     const [result, countResult] = await Promise.all([
-      pool.query(query, paramsCount)
+      pool.query(query, paramsCount),
+      pool.query(countQuery, ParamsCountQuery)
     ]);
 
-    res.status(200).json({}); 
+    res.status(200).json({
+      data: result.rows,
+      meta: {
+        total: parseInt(countResult.rows[0].count()),
+        limit: parseInt(limit),
+        offset: parseInt(offset)
+      }
+    }); 
 
   }catch(err) {
     console.error(`Error To Get Products: ${err}`); 
+    res.status(500).json({
+      message: `Internal Server Error`, 
+      error: err.message
+    }); 
   }
 
 }; 
