@@ -3,23 +3,25 @@
   "version": "1.0.0",
   "type": "module",
   "description": "We created an API with the OpenAPI methodology. Use Express Js and Virtual environments.",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "format": "prettier --write .",
     "lint": "eslint .",
     "warning": "node --trace-warnings",
-    "start": "node src/index.js",
-    "dev": "node --watch src/index.js"
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^6.13.0",
     "cors": "^2.8.5",
-    "dotenv": "^17.2.0",
+    "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "express-openapi-validator": "^5.5.7",
     "js-yaml": "^4.1.0",
+    "pg": "^8.16.3",
     "prettier": "^3.6.2",
     "swagger-ui": "^3.29.0",
     "swagger-ui-express": "^5.0.1",
@@ -27,7 +29,12 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.31.0",
+    "@jest/globals": "^30.0.5",
     "eslint": "^9.31.0",
-    "globals": "^16.3.0"
+    "globals": "^16.3.0",
+    "jest": "^30.0.5",
+    "msw": "^2.10.4",
+    "prisma": "^6.13.0",
+    "supertest": "^7.1.4"
   }
 }

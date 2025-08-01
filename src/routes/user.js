@@ -1,56 +1,11 @@
 import express from "express";
-import SwaggerUI from "swagger-ui-express";
-import YAML from "js-yaml";
-import path from "path";
-import { fileURLToPath } from "url";
-import { readFileSync } from "fs";
-import OpenApiValidator from "express-openapi-validator";
-//import { error } from "console";
-
-// === Express Server Setup ===
-const app = express();
-// = Port Server: localhost =
-const port = 3000;
-
-// = Mega Root Absolute Path | Yaml file location =
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// = Load OpenAPI specification from YAML file | Watch in Web Browser (Swagger) =
-const swaggerDocument = YAML.load(
-  readFileSync(path.join(__dirname, `../openAPI/api.yaml`), `utf8`),
-);
+const router = express.Router();
 
 // = In-Memory Users Storage; =
 const users = [];
 
-// = Swagger UI Setup | API Documentation =
-app.use(`/api-docs`, SwaggerUI.serve, SwaggerUI.setup(swaggerDocument));
-
-// = Middleware to parse JSON Bodies | Parse (Data Structure) =
-app.use(express.json());
-
-const apiSpecPath = path.join(__dirname, `../openAPI/api.yaml`);
-
-app.use(
-  OpenApiValidator.middleware({
-    apiSpec: apiSpecPath,
-    ignorePaths: /api-docs/,
-    validateRequests: true, // Validate request: body, query, params
-    validateResponses: true, // Validate Response
-  }),
-);
-
-// ================= =========  === API EndPoints | CRUD ===  =========  ================= //
-
-// = GET (hello) =
-app.get(`/hello`, (req, res) => {
-  res
-    .status(200)
-    .json({ message: `Hello World with OpenAPI 3.1.1 | API First` });
-});
-// = POST (User) =
-app.post(`/user`, (req, res) => {
+// === Method: POST ===
+router.post(`/user`, (req, res) => {
   const { name, email } = req.body;
   const errors = {}; // - Object To store validation errors -
 
@@ -84,13 +39,14 @@ app.post(`/user`, (req, res) => {
     user: newUser,
   });
 });
-// = GET (User) =
-app.get(`/user`, (req, res) => {
+
+// === Method: GET ===
+router.get(`/user`, (req, res) => {
   res.status(200).json(users);
 });
 
-// == GET Users/:id
-app.get(`/user/:id`, (req, res) => {
+// === Method: GET Users/:id ===
+router.get(`/user/:id`, (req, res) => {
   try {
     const { id } = req.params;
     // = Convert ID in Number =
@@ -112,8 +68,8 @@ app.get(`/user/:id`, (req, res) => {
   }
 });
 
-// = PUT (/user/{id}) Update User =
-app.put(`/user/:id`, (req, res) => {
+// === Method: PUT (/user/{id}) Update User ===
+router.put(`/user/:id`, (req, res) => {
   try {
     const { id } = req.params; // Get ID of parameters of URL
     const { name, email } = req.body; // GET the Data of Body request
@@ -179,8 +135,8 @@ app.put(`/user/:id`, (req, res) => {
   }
 });
 
-// - Delete (users/{id}) Delete User -
-app.delete(`/user/:id`, (req, res) => {
+// === Method: Delete (users/{id}) Delete User ===
+router.delete(`/user/:id`, (req, res) => {
   const { id } = req.params;
 
   const findIndex = users.findIndex((user) => user.id === id);
@@ -196,23 +152,4 @@ app.delete(`/user/:id`, (req, res) => {
   res.status(204).send(); // Not Content
 });
 
-// = Middleware To Handle Validation Errors =
-app.use((err, req, res, next) => {
-  if (err.status & err.errors) {
-    res.status(err.status).json({
-      message: err.message,
-      errors: err.errors,
-    });
-  } else {
-    res.status(500).json({
-      message: `Internal Server Error`,
-      errors: { general: err.message || `Something went wrong` },
-    });
-  }
-});
-// = Listen PORT =
-app.listen(port, () => {
-  console.log(`Server is running in port ${port} | Production server`);
-  console.log(`OpenAPI Documentation is Available ar /api-docs`);
-  console.log(`Open API Specification is Available at ${apiSpecPath}`);
-});
+export default router;

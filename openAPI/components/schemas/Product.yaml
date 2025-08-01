@@ -1,0 +1,77 @@
+type: object
+properties:
+  id_producto:
+    type: integer
+    format: int64
+    description: ID del producto
+    readOnly: true
+    example: 1
+nombre_producto:
+  type: string
+  description: Nombre completo y descriptivo del producto
+  example: Laptop UltraBook
+descripcion_corta:
+  type: string
+  description: Una breve descripción del producto
+  example: Delgado y potente para profesionales
+precio_usd:
+  type: number
+  format: float
+  description: Precio del producto en USD
+  example: 1299.99
+categoria:
+  type: string
+  description: Categoría a la que pertenece el producto.
+  example: Electrónica
+stock_disponible:
+  type: integer
+  description: Cantidad de Unidades disponibles en el Inventario
+  example: 50
+sku:
+  type: string
+  description: Stock Keeping Unit. Código único para identificación interna
+  example: LAP-UB-001
+fecha_lanzamiento:
+  type: string
+  format: date,
+  description: Fecha de lanzamiento o adición al inventario (YYYY-MM-DD).
+  example: 2024-01-15
+activo:
+  type: boolean
+  description: Indica si el producto está en Inventario; listo para venta.
+  example: true
+marca:
+  type: string
+  description: Marca del producto
+  example: TechGen
+peso_kg:
+  type: number
+  format: float
+  description: Peso del Producto en Kilogramos
+  example: 1.20
+dimensiones_cm:
+  type: string
+  description: Dimensiones Aproximadas del producto
+  example: 30x20x1.5
+valoracion_promedio:
+  type: number
+  format: float
+  description: Calificación promedio del producto
+  example: 4.8
+num_valoraciones:
+  type: integer
+  description: Número total de valoraciones recibidas
+  example: 120
+url_imagen:
+  type: string
+  format: url
+  description: URL de una imagen principal del producto.
+  example: https://ejemplo.com/imagenes/laptop_ub.jpg
+required:
+  - id_producto
+  - nombre_producto
+  - precio_usd
+  - sku
+  - categoria
+  - stock_disponible
+  - activo

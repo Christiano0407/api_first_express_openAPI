@@ -1,0 +1,21 @@
+type: object
+properties:
+  message:
+    type: string
+    description: General error message
+    example: bad request | Invalid request
+  errors:
+    type: object
+    properties:
+      name:
+        type: string
+        description: error message for name field
+        example: name is required
+      email:
+        type: string
+        description: error message for email field
+        example: email is required
+additionalProperties: false # <-- Corregido: para no permitir propiedades adicionales
+required:
+  - message
+  - errors
