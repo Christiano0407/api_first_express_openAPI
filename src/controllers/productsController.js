@@ -2,7 +2,7 @@
 import pool from "../db.js"; // = Package DB - pg =
 
 // === Validation Data Products === //
-const validationDataProduct = (data, isUpdate = false) => {
+export const validationDataProduct = (data, isUpdate = false) => {
   
   const errors = {}; 
   
