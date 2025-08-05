@@ -7,7 +7,7 @@ export const validationDataProduct = (data, isUpdate = false) => {
   const errors = {}; 
   
   if(!isUpdate) {
-    if(!data.nombre_producto || typeof nombre_producto !== `string`) {
+    if(!data.nombre_producto || typeof data.nombre_producto !== `string`) {
       errors.nombre_producto = `Error! Required the name. Please, the name is required to Get Product.`; 
     }
     if(!data.precio_usd || typeof data.precio_usd !== `number` || data.precio_usd <= 0) {
@@ -19,7 +19,7 @@ export const validationDataProduct = (data, isUpdate = false) => {
     if(!data.categoria || typeof data.categoria !== `string`) {
       errors.categoria = `Error To Get Categoria. Required the Categoria`; 
     }
-    if(data.stock_disponible === undefined || typeof data.stock_disponible !== `number` && data.stock_disponible <= 0) {
+    if(data.stock_disponible === undefined || typeof data.stock_disponible !== `number` && data.stock_disponible < 0) {
       errors.stock_disponible = `Error! Required the Stock & Sorry, the Stock is Empty`; 
     }
   }
