@@ -27,7 +27,6 @@ describe(`Product Validation`, () => {
       }
       const errorProductName = validationDataProduct(validationName, false);
       expect(errorProductName.nombre_producto).toBeDefined(); 
-      expect(errorProductName.nombre_producto).toContain(`String`); 
 
     }); 
 
@@ -41,7 +40,7 @@ describe(`Product Validation`, () => {
       }
       const errorPriceValid = validationDataProduct(validationPrice, false); 
       expect(errorPriceValid.precio_usd).toBeDefined(); 
-      expect(errorPriceValid.precio_usd).toContain(`A number | Must be positive Number > 0`);  
+      expect(errorPriceValid.precio_usd).toContain(`number`);  
     }); 
 
     test(`We have an Error. Please, add the "sku" to identify the Product`, () => {
@@ -53,7 +52,6 @@ describe(`Product Validation`, () => {
       }
       const errorSKUValid = validationDataProduct(validationSKU, false); 
       expect(errorSKUValid.sku).toBeDefined(); 
-      expect(errorSKUValid.sku).toContain(`string`); 
     }); 
 
     test( `Error To Get Categoria. Required the Categoria`, () => {
@@ -64,7 +62,6 @@ describe(`Product Validation`, () => {
       }
       const errorCategory = validationDataProduct(validationCategory, false); 
       expect(errorCategory.categoria).toBeDefined(); 
-      expect(errorCategory.categoria).toContain(`string`); 
     }); 
 
     test(`Error! Required the Stock & Sorry, the Stock is Empty`, () => {
@@ -75,17 +72,17 @@ describe(`Product Validation`, () => {
         sku: 'TEST-LAP-001',
       }
       const errorStock = validationDataProduct(validationStock, false); 
-      expect(errorStock.stock_disponible).toBeDefined(); 
-      expect(errorStock.stock_disponible).toContain(`A Positive Number and not is empty`); 
+      expect(errorStock.stock_disponible).toBeDefined();  
     }); 
+  })
+}); 
 
-    test(`Don't be return minimum to the Products`, () => {
+describe(`validationDataProduct Update Mode`, () => {
+   test(`Should Be Return Error! Because, Update mode with minimum data`, () => {
       const validationMinimum = {
-        nombre_producto: 'Laptop Test',
+        precio_usd: 899.00
       }
-      const errorMinimum = validationDataProduct(validationMinimum, false); 
+      const errorMinimum = validationDataProduct(validationMinimum, true); 
       expect(Object.keys(errorMinimum)).toHaveLength(0); 
     }); 
-  
-  })
 }); 

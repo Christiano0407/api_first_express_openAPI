@@ -10,7 +10,7 @@ export const validationDataProduct = (data, isUpdate = false) => {
     if(!data.nombre_producto || typeof data.nombre_producto !== `string`) {
       errors.nombre_producto = `Error! Required the name. Please, the name is required to Get Product.`; 
     }
-    if(!data.precio_usd || typeof data.precio_usd !== `number` || data.precio_usd <= 0) {
+    if(!data.precio_usd || typeof data.precio_usd !== `number` || data.precio_usd < 0) {
       errors.precio_usd = `Error! The price is required and must be a positive number`; 
     }
     if(!data.sku || typeof data.sku !== `string`) {
