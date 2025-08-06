@@ -3,19 +3,26 @@ import { createProductMock } from "../setup/testHelpers.js";
 import { beforeEach, describe, expect, jest, test } from "@jest/globals";
 
 // === Mocks (Jest | No Prims) | Replace our Original Data in PostgreSQL ===
-// = Default is 'default export' = 
-jest.mock("../../../src/db.js", () => ({
-  default: {
-    query: jest.fn()
+// ⚠️ IMPORTANTE: El mock DEBE ir antes de cualquier import que use db.js
+jest.mock("../../../src/db.js", () => {
+  const mockedPool = {
+    query: jest.fn(), 
+    on: jest.fn(), 
+    connect: jest.fn(), 
+  }; 
+
+  return {
+    __esModule:true, // Important To ES modules
+    default:mockedPool
   }
-}));  
+});  
 
 import * as productsControllers from "../../../src/controllers/productsController.js"; 
 import pool from "../../../src/db.js";
 import { testPool, setupTestCreateDb, cleanTestDb, closeTestDb } from "../setup/testDB.js";
 
 // = Reference To Mock + DB(pool) = 
-const mockPool = jest.mocked(pool); 
+//const mockedPool = jest.mocked(pool); 
 
 describe("Products Controllers - Unit Test", () => {
   let mockReq, mockRes; 
@@ -28,12 +35,23 @@ describe("Products Controllers - Unit Test", () => {
     }; 
 
     mockRes = {
-      json: jest.fn().mockReturnThis(), 
-      status: jest.fn().mockReturnThis()
+      json: jest.fn().mockReturnThis(),
+      status: jest.fn().mockReturnThis(),
+      send: jest.fn().mockReturnThis()
     }; 
-
+    // = Clean Mocks For Security 
     jest.clearAllMocks(); 
   });
+
+   // === Verification Test ===
+  describe("Mock Verification", () => {
+    test("Should have mocked pool correctly", () => {
+      expect(pool).toBeDefined();
+      expect(pool.query).toBeDefined();
+      expect(jest.isMockFunction(pool.query)).toBe(true);
+    });
+  });
+
 
     // === Tests Controllers ===
   describe("getAllProducts", () => {
@@ -73,13 +91,14 @@ describe("Products Controllers - Unit Test", () => {
         }
       ]; 
 
-      mockPool.query.mockResolvedValue({ rows: mockProduct }); 
+      pool.query.mockResolvedValue({ rows: mockProduct }); 
 
       await productsControllers.getAllProductsPlus(mockReq, mockRes);
       
-      expect(mockPool.query).toHaveBeenCalledWith(
+      expect(pool.query).toHaveBeenCalledWith(
         `SELECT * FROM producto ORDER BY id_producto ASC`
       ); 
+
       expect(mockRes.json).toHaveBeenCalledWith(mockProduct); 
       }); 
     }); 
