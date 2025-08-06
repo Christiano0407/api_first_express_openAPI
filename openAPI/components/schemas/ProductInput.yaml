@@ -33,8 +33,8 @@ properties:
     example: LAP-UB-001
   fecha_lanzamiento:
     type: string
-    format: date,
-    description: Fecha de lanzamiento o adición al inventario (YYYY-MM-DD).
+    format: date
+    description: Fecha de lanzamiento o adición al inventario (YYYY-MM-DD)
     example: 2024-01-15
   activo:
     type: boolean

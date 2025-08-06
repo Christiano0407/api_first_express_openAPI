@@ -71,7 +71,7 @@ post:
       application/json:
         schema:
           $ref: "../components/schemas/ProductInput.yaml"
-  response:
+  responses:
     "201":
       description: Product created successfully
       content:
