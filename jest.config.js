@@ -1,9 +1,5 @@
 export default {
-  preset: 'default',
   testEnvironment: 'node',
-
-  extensionsToTreatAsEsm: ['.js'],
-
   // ✅ Añadir soporte para Babel si es necesario
   transform: {
     "^.+\\.js$": "babel-jest"
