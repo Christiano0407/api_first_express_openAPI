@@ -1,17 +1,21 @@
 // ====== === TESTS: TESTS Unitarios - Controllers Data Validation === ======
-import * as productsControllers from "../../../src/controllers/productsController.js"; 
-import { testPool, setupTestCreateDb, cleanTestDb, closeTestDb } from "../setup/testDB.js";
-import { createProductMock  } from "../setup/testHelpers.js"; 
-import { beforeEach, describe, jest } from "@jest/globals";
-import pool from "../../../src/db";
+import { createProductMock } from "../setup/testHelpers.js";
+import { beforeEach, describe, expect, jest, test } from "@jest/globals";
 
 // === Mocks (Jest | No Prims) | Replace our Original Data in PostgreSQL ===
 // = Default is 'default export' = 
-jest.mock("../../../src/db.js", () => {
+jest.mock("../../../src/db.js", () => ({
   default: {
     query: jest.fn()
   }
-});  
+}));  
+
+import * as productsControllers from "../../../src/controllers/productsController.js"; 
+import pool from "../../../src/db.js";
+import { testPool, setupTestCreateDb, cleanTestDb, closeTestDb } from "../setup/testDB.js";
+
+// = Reference To Mock + DB(pool) = 
+const mockPool = jest.mocked(pool); 
 
 describe("Products Controllers - Unit Test", () => {
   let mockReq, mockRes; 
@@ -31,6 +35,53 @@ describe("Products Controllers - Unit Test", () => {
     jest.clearAllMocks(); 
   });
 
-}); 
+    // === Tests Controllers ===
+  describe("getAllProducts", () => {
+    test("Should be return all products successfully", async () => {
+      const mockProduct = [
+        { id_producto: 1, 
+          nombre_producto: 'Laptop Test',
+          descripcion_corta: 'Laptop para testing',
+          precio_usd: 999.99,
+          categoria: 'Electrónica',
+          stock_disponible: 10,
+          sku: 'TEST-LAP-001',
+          fecha_lanzamiento: '2024-01-15',
+          activo: true,
+          marca: 'TestBrand',
+          peso_kg: 2.5,
+          dimensiones_cm: '35x25x2',
+          valoracion_promedio: 4.5,
+          num_valoraciones: 50,
+          url_imagen: 'https://test.com/image.jpg',
+        }, 
+        { id_producto: 2, 
+          nombre_producto: 'Mac Pro',
+          descripcion_corta: 'Laptop para testing',
+          precio_usd: 2000.00,
+          categoria: 'Electrónica',
+          stock_disponible: 20,
+          sku: 'TEST-LAP-002',
+          fecha_lanzamiento: '2024-02-10',
+          activo: true,
+          marca: 'TestBrandMac',
+          peso_kg: 2.0,
+          dimensiones_cm: '35x25x2',
+          valoracion_promedio: 4.5,
+          num_valoraciones: 60,
+          url_imagen: 'https://test.com/image_mac.jpg',
+        }
+      ]; 
 
-// === Tests Controllers ===
+      mockPool.query.mockResolvedValue({ rows: mockProduct }); 
+
+      await productsControllers.getAllProductsPlus(mockReq, mockRes);
+      
+      expect(mockPool.query).toHaveBeenCalledWith(
+        `SELECT * FROM producto ORDER BY id_producto ASC`
+      ); 
+      expect(mockRes.json).toHaveBeenCalledWith(mockProduct); 
+      }); 
+    }); 
+
+}); 
