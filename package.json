@@ -11,6 +11,7 @@
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
     "test": "NODE_ENV=test jest",
+    "test:all": "npm-run-all test:unit test:validation test:integration test:controllers test:openapi test:routes",
     "test:watch": "NODE_ENV=test jest --watch",
     "test:coverage": "NODE_ENV=test jest --coverage",
     "test:unit": "NODE_ENV=test jest --testPathPatterns=unit",

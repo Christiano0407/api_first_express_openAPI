@@ -58,7 +58,7 @@ app.get(`/`, (req, res) => {
 
 // = Middleware To Handle Validation Errors =
 app.use((err, req, res, next) => {
-  if (err.status & err.errors) {
+  if (err.status && err.errors) {
     return res.status(err.status).json({
       message: err.message,
       errors: err.errors,
